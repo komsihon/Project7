@@ -1,0 +1,122 @@
+{% extends "core/base_bs.html" %}
+{% load i18n i18n staticfiles auth_tokens %}
+{% block meta %}
+    {{ block.super }}
+    <meta name="description" content="">
+    <meta name="author" content="">
+{% endblock %}
+
+ <!-- core CSS -->
+{% block head_style %}
+    {{ block.super }}
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}?version=1.01">
+    <style>
+        .search_box {background-image: url("{% static 'img/search_icon.png' %}")}
+        div.socials div {background-image: url('{% static "img/socialicons.png" %}'); background-size: 125px auto; float: left; height: 28px; margin-left: 5px;overflow: hidden; width: 28px}
+    </style>
+{% endblock %}
+{% block head_js %}
+    {{ block.super }}
+    <!--[if lt IE 9]>
+    <script src="{% static 'js/html5shiv.js' %}"></script>
+    <script src="{% static 'js/respond.min.js' %}"></script>
+    <![endif]-->
+{% endblock %}
+
+{% block custom_head %}
+{% endblock %}
+
+{% block header_brand %}
+    <a class="navbar-brand" href="{% url 'blog:home'%}">
+        <strong>ikwen</strong>
+    </a>
+{% endblock %}
+{% block content %}
+    <section id="blog" class="container">
+        {% block page_header %}
+        {% endblock %}
+        <div class="row blog-content">
+            <div  class="col-md-8" style="">
+            {% block page_content %}
+            {% endblock %}
+            </div>
+            <aside class="col-md-4">
+                <div class="widget search">
+                    <form role="form" action="{% url 'blog:search'   %}" method="get" autocomplete="off">
+                        <input type="text"  name="radix" class="form-control search_box" autocomplete="off" placeholder="Search blog">
+                    </form>
+                </div><!--/.search-->
+                {% if suggestions %}
+                <div class="widget categories">
+                    <h3>Post suggestions</h3>
+                    <div class="row" style="">
+                        <div class="col-sm-12">
+                            {% for suggestion in suggestions %}
+                            <div class="single_comments">
+                                <a href="{% url 'blog:details' suggestion.slug %}">
+                                    <img src="{% static 'blog/img/blog/avatar3.png' %}" alt=""  />
+                                    <p>{{ suggestion.title }} </p>
+                                </a>
+                                <div class="entry-meta small muted">
+                                    <span>By <a href="#">{{ suggestion.member.full_name }}</a></span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div><!--/.recent comments-->
+                {% endif %}
+
+
+                <div class="widget categories">
+                    <h3>Categories</h3>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="blog_category">
+                                {% for category in categories %}
+                                <li><a href="{% url 'blog:post_per_category'  category.slug %}">{{ category.name }} <span class="badge">{{ category.post_count }}</span></a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div><!--/.categories-->
+                {% if recent_posts %}
+                <div class="widget categories">
+                    <h3>Most consulted</h3>
+                    <div class="row">
+                        {% for suggestion in recent_posts %}
+                        <div class="single_comments">
+                            <a href="{% url 'blog:details' suggestion.slug %}">
+                                <img src="{% static 'blog/img/blog/avatar3.png' %}" alt=""  />
+                                <p>{{ suggestion.title }} </p>
+                            </a>
+                            <div class="entry-meta small muted">
+                                <span>By <a href="#">{{ suggestion.member.full_name }}</a></span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </aside>
+        </div>
+    </section>
+        <!-- /#page-content-wrapper -->
+{% endblock %}
+
+    <!-- jQuery -->
+{#    <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>#}
+
+    <!-- Bootstrap Core JavaScript -->
+{#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
+
+    {% block js %}
+        {{ block.super }}
+        <script type="text/javascript">
+        (function() {
+            $('form#search input.input-sm').attr('placeholder', 'Search ikwen')
+        })()
+    </script>
+    {% endblock %}
