@@ -8,31 +8,41 @@
     <meta property="og:title" content="{{ post.title }} {% trans "sur" %} "/>
     <meta property="og:description" content="{{ post.entry }}"/>
     {% if post.media.name %}
-    <meta property="og:image" content="{{ post.media.url }}"/>
+    <meta property="og:image" content="{{ post.image.url }}"/>
     {% endif %}
 
 {% endblock %}
 {% block page_content %}
     {% include 'snippets/fb_sdk.html' %}
-    {% if post.media.name %}
+    {% if post.image.name %}
         <div class="row" style="">
             <div class="col-lg-12 hidden-xs">
-                <img src="{{ post.media.url }}" width="100%">
+                <img src="{{ post.image.url }}" width="100%">
             </div>
-            <div class="col-lg-12 visible-xs" style="background-image: url('{{ post.media.url }}'); background-size: 100% auto; background-position: center; height: 6em"></div>
+            <div class="col-lg-12 visible-xs" style="background-image: url('{{ post.image.url }}'); background-size: cover; background-position: center; height: 12em"></div>
         </div>
     {% endif %}
     <div class="post">
         <h1><span class="title">{{ post.title }}</span></h1>
-        <div class="profile  visible-xs" style="width:100%">
-            <img class="poster" src="{{ settings.IKWEN_MEDIA_URL }}{{ post.member.photo.small_name }}">
-            <span class="name">{{ post.member.full_name  }}</span>
-            <span class="create">
-                <span>Member since: </span>
-                <span> {{ post.member.display_date_joined }}</span>
-            </span>
-        </div>
         <div class="intro">
+            <span class="text" style="clear: both; float: left">{{ post.entry | safe }}</span>
+        </div>
+        <div class="actions">
+            <div class="post-date">
+                <span class="icon"></span>
+                <span>{{ post.pub_date }}</span>
+            </div>
+        </div>
+        <div id="author-profile">
+            <div class="profile  visible-xs" style="width:100%">
+                <img class="poster" src="{{ settings.IKWEN_MEDIA_URL }}{{ post.member.photo.small_name }}">
+                <span class="name">{{ post.member.full_name  }}</span>
+                <span class="create">
+                    <span>Member since: </span>
+                    <span> {{ post.member.display_date_joined }}</span>
+                </span>
+            </div>
+
             <div class="profile hidden-xs">
 
                 {% if post.member.photo and post.member.photo.name %}
@@ -46,14 +56,6 @@
                         <span> {{ post.member.display_date_joined }}</span>
                     </span>
                 </div>
-
-            </div>
-            <span class="text" style="clear: both; float: left">{{ post.entry | safe }}</span>
-        </div>
-        <div class="actions">
-            <div class="post-date">
-                <span class="icon"></span>
-                <span>{{ post.pub_date }}</span>
             </div>
         </div>
         <div class="col-lg-12 bottom">
@@ -71,7 +73,20 @@
             </div>
         </div>
     </div>
-    <div class="row">
+{% endblock %}
+
+
+{% block cta_banner %}
+    <div class="deploy-banner">
+        <div class="container">
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block comments %}
+    <div class="container">
+    <div class="row container">
         <section id="comments" class="col-xs-12">
             {% for comment in comments %}
                 <div class="comment">
@@ -111,7 +126,7 @@
                     <input type="url" class="form-control">
                 </div>
             </div>
-            <div class="col-sm-7">
+            <div class="col-sm-8">
                 <div class="form-group c-comment">
                     <label>Message *</label>
                     <textarea name="message" id="message" required class="form-control u-comment" rows="8"></textarea>
@@ -124,6 +139,7 @@
         </div>
     </form>
 
+    </div>
 
 
 {% endblock %}

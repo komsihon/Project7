@@ -69,7 +69,7 @@
                 return false
                 });
             function populateMedia(media) {
-                if (media.length == 0) {
+                if (media.length <= 0) {
                     var $emptyRow = $('<div class="empty-grid" colspan="10">No data found</div>')
                     $emptyRow.insertBefore('.media-ctnr.tpl')
                     return
@@ -77,13 +77,13 @@
                 var $list = $('<div></div>')
                 for (var i = 0; i < media.length; i++) {
                     var $newRow = $('#image-list .media-ctnr.tpl').clone().removeClass('tpl')
-                    $newRow = applyCommentTemplate($newRow, media[i]).show()
+                    $newRow = applyMediaTemplate($newRow, media[i]).show()
                     $list.append($newRow)
                 }
                 $list.children().insertBefore('#image-list .media-ctnr.tpl')
 
             }
-            function applyCommentTemplate($tpl, media){
+            function applyMediaTemplate($tpl, media){
                 $tpl.attr('filename', media);
                 $tpl.find('.image').attr('src', media);
                 return $tpl
@@ -110,7 +110,6 @@
                             $newRow.insertBefore('#image-list .media-ctnr.tpl').show()
                         };
                         img.src = photo.url;
-
                     } else {
                         alert("upload failed!");
                     }
@@ -125,7 +124,7 @@
 
             $('body').on('click', '#image-list .media-ctnr .delete-media', function() {
                 var response = confirm("Do you realy want to delete this image ?");
-                if (response != true) return
+                if (response !== true) return
                 else {
                     var filename = $(this).parent('.media-ctnr').find('img').attr('src');
                     $.getJSON('{% url 'blog:delete_photo' %}', {filename: filename});
@@ -135,7 +134,6 @@
                 }
             });
             $('.qq-upload-drop-area').remove()
-
         })()
     </script>
 {% endblock %}

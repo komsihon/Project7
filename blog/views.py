@@ -1,60 +1,52 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
+from math import *
 
 # Create your views here.
 import random, os
-from blog.models import Post, Comments, to_dict, PostCategory
+from blog.models import Post, Comments, PostCategory
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 import json
+from django.utils import translation
 from django.template.defaultfilters import slugify
 
 from ikwen.core.models import Application
 
 from conf import settings
 
-POST_PER_PAGE = 5
+POST_PER_PAGE = 5.00
 MEDIA_DIR = settings.MEDIA_ROOT + 'tiny_mce/'
 TINYMCE_MEDIA_URL = settings.MEDIA_URL + 'tiny_mce/'
 
+ENGLISH = 'English'
+FRENCH = 'Francais'
 
-class BaseView(TemplateView):
-
-    def get_context_data(self, **kwargs):
-        context = super(BaseView, self).get_context_data(**kwargs)
-        rand = random.random()
-        sugges = Post.objects.filter(publish=True, rand__lte=rand)[:5]
-        suggestions = []
-        for suggestion in sugges:
-            if suggestion.media.name:
-                suggestions.append(suggestion)
-        categories = PostCategory.objects.all()
-        most_consulted = Post.objects.filter(publish=True).order_by('-visit_count')[:5]
-        recents = Post.objects.filter(publish=True).order_by('created_on')[:5]
-        recent_posts = []
-        for suggestion in recents:
-            if suggestion.media.name:
-                recent_posts.append(suggestion)
-        context['categories'] = categories
-        context['recent_posts'] = recent_posts
-        context['suggestions'] = suggestions
-        context['most_consulted'] = most_consulted
-        context['archives'] = recent_posts
-        return context
+LANGUAGE_CHOICES = (
+    (ENGLISH, 'English'),
+    (FRENCH, 'Francais')
+)
 
 
-class PostsList(BaseView):
+class PostsList(TemplateView):
     template_name = 'blog/home.html'
 
     def get_context_data(self, **kwargs):
         context = super(PostsList, self).get_context_data(**kwargs)
-        posts = Post.objects.filter(publish=True, appear_on_main_page=True).order_by('order_of_appearance')
+
+        lang = translation.get_language()
+        if 'en' in lang:
+            language = ENGLISH
+        else:
+            language = FRENCH
+        posts = Post.objects.filter(publish=True, appear_on_main_page=True, language=language).order_by('order_of_appearance')
         posts = posts.order_by('-pub_date')
         entries = []
         for suggestion in posts:
-            if suggestion.media.name:
-                entries.append(suggestion)
-        page_count = posts.count() / POST_PER_PAGE
+            # if suggestion.image.name:
+            #     entries.append(suggestion)
+            entries.append(suggestion)
+        page_count = ceil(posts.count() / POST_PER_PAGE)
         for entry in entries:
             comment_count = Comments.objects.filter(post=entry).count()
             entry.comment_count = comment_count
@@ -68,7 +60,7 @@ class AdminHome(TemplateView):
     template_name = 'admin_home.html'
 
 
-class Search(BaseView):
+class Search(TemplateView):
     template_name = 'blog/search.html'
 
     def get_context_data(self, **kwargs):
@@ -85,7 +77,7 @@ class Search(BaseView):
         return context
 
 
-class PostPerCategory(BaseView):
+class PostPerCategory(TemplateView):
     template_name = 'blog/search.html'
 
     def get_context_data(self, **kwargs):
@@ -102,7 +94,7 @@ class PostPerCategory(BaseView):
         return context
 
 
-class PostDetails(BaseView):
+class PostDetails(TemplateView):
     template_name = 'blog/post_details.html'
 
     def get_context_data(self, **kwargs):
@@ -111,8 +103,8 @@ class PostDetails(BaseView):
         entry = get_object_or_404(Post, slug=slug)
         context['comments'] = Comments.objects.filter(post=entry, publish=True).order_by('id')
         context['post'] = entry
-        actual_count = entry.visit_count
-        entry.visit_count = actual_count + 1
+        actual_count = entry.consult_count
+        entry.consult_count = actual_count + 1
         entry.save()
         return context
 

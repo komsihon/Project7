@@ -11,7 +11,7 @@
     {{ block.super }}
     <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}?version=1.03">
+    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}?version=1.02">
     <style>
         .search_box {background-image: url("{% static 'img/search_icon.png' %}")}
         div.socials div {background-image: url('{% static "img/socialicons.png" %}'); background-size: 125px auto; float: left; height: 28px; margin-left: 5px;overflow: hidden; width: 28px}
@@ -261,8 +261,11 @@
         </div>
     </section>
         <!-- /#page-content-wrapper -->
+{% block cta_banner %}
 {% endblock %}
-
+{% block comments %}
+{% endblock %}
+{% endblock %}
     <!-- jQuery -->
 {#    <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>#}
 

@@ -8,9 +8,8 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^laakam/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^ikwen/', include('ikwen.core.urls', namespace='ikwen')),
     url(r'^page/(?P<url>[-\w]+)/$', FlatPageView.as_view(), name='flatpage'),
     url(r'^', include('blog.urls', namespace='blog')),
 )
-

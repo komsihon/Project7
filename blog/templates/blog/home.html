@@ -22,13 +22,14 @@
     {% include 'snippets/fb_sdk.html' %}
     {% if entries %}
         {% for entry in items_paginated %}
-            {% if entry.media.name %}
                 <div class="post">
                     <h1><a class="title" href="{% url 'blog:details' entry.slug %}"><span>{{ entry.title }}</span></a></h1>
                     <p class="meta">{{ entry.pub_date }}.
                         <a href="{% url 'blog:details' entry.slug %}" style="border-bottom: 1px dotted #686868; text-decoration: none">{{ entry.comment_count }} Comments</a>
-                    </p><a href="{% url 'blog:details' entry.slug %}"><img class="img-responsive img-blog" src="{{ entry.media.url }}" width="100%" alt="" /></a>
-
+                    </p>
+                    {% if entry.image.name %}
+                        <a href="{% url 'blog:details' entry.slug %}"><img class="img-responsive img-blog" src="{{ entry.image.url }}" width="100%" alt="" /></a>
+                    {% endif %}
                     <div class="intro" style="">
                         <div class="text">{{ entry.summary }}</div>
                     </div>
@@ -37,7 +38,6 @@
                     </p>
                     <a href="{% url 'blog:details' entry.slug %}" class="more">Read more</a>
                 </div>
-            {% endif %}
         {% endfor %}
     {% else %}
         <div class="post alert alert-danger" align="center" style="">
