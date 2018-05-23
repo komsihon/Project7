@@ -23,7 +23,7 @@
     {% if entries %}
         {% for entry in items_paginated %}
                 <div class="post">
-                    <h1><a class="title" href="{% url 'blog:details' entry.slug %}"><span>{{ entry.title }}</span></a></h1>
+                    <h1><a class="title" href="{% url 'blog:details' entry.slug %}"><span>{{ entry.title }} </span></a></h1>
                     <p class="meta">{{ entry.pub_date }}.
                         <a href="{% url 'blog:details' entry.slug %}" style="border-bottom: 1px dotted #686868; text-decoration: none">{{ entry.comment_count }} Comments</a>
                     </p>
