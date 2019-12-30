@@ -11,7 +11,7 @@
     {{ block.super }}
     <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}?ver=2.04">
+    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}?ver=12.26.19.19.30">
     <style>
         .search_box {background-image: url("{% static 'img/search_icon.png' %}")}
         div.socials div {background-image: url('{% static "ikwen/img/socialicons.png" %}'); background-size: 125px auto; float: left; height: 28px; margin-left: 5px;overflow: hidden; width: 28px}
@@ -134,18 +134,14 @@
                 <div class="widget categories">
                     <h3>Post suggestions</h3>
                     <div class="row" style="">
-                        <div class="col-sm-12">
-                            {% for suggestion in suggestions %}
-                            <div class="single_comments suggestions">
-                                <a href="{% url 'blog:details' suggestion.slug %}">
-                                    {% if suggestion.media.name %}
-                                        <img src="{{ suggestion.media.url }}" width="100" alt=""  />
-                                    {% endif %}
-                                    <div>{{ suggestion.title }} </div>
-                                </a>
-                            </div>
-                            {% endfor %}
+                        {% for suggestion in suggestions %}
+                        <div class="single_comments suggestions">
+                            <a href="{% url 'blog:details' suggestion.slug %}">
+                                <img src="{% get_media_prefix %}{{ suggestion.image.small_name }}" width="100" alt=""  />
+                                <div>{{ suggestion.title }} </div>
+                            </a>
                         </div>
+                        {% endfor %}
                     </div>
                 </div><!--/.recent comments-->
                 {% endif %}
@@ -157,7 +153,7 @@
                         <div class="col-sm-6">
                             <ul class="blog_category">
                                 {% for category in categories %}
-                                <li><a href="{% url 'blog:post_per_category'  category.slug %}">{{ category.name }} <span class="badge">{{ category.post_count }}</span></a></li>
+                                <li><a href="{% url 'blog:post_per_category'  category.slug %}"><button type="button" class="btn btn-outline-primary"> {{ category.name }} <span class="badge">{{ category.post_count }}</span></button></a></li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -170,9 +166,7 @@
                         {% for suggestion in recent_posts %}
                         <div class="single_comments suggestions">
                             <a href="{% url 'blog:details' suggestion.slug %}">
-                                {% if suggestion.media.name %}
-                                    <img src="{{ suggestion.media.url }}"  width="100"  alt=""  />
-                                {% endif %}
+                                <img src="{% get_media_prefix %}{{ suggestion.image.small_name }}"  width="100"  alt=""  />
                                 <div>{{ suggestion.title }} </div>
                             </a>
                         </div>

@@ -20,7 +20,7 @@
 
 {% block page_content %}
     {% include 'snippets/fb_sdk.html' %}
-    {% if entries %}
+    {% if entry_list %}
         {% for entry in items_paginated %}
                 <div class="post">
                     <h1><a class="title" href="{% url 'blog:details' entry.slug %}"><span>{{ entry.title }} </span></a></h1>
@@ -33,9 +33,9 @@
                     <div class="intro" style="">
                         <div class="text">{{ entry.summary }}</div>
                     </div>
-                    <p>
-                        <b>Tags: </b>{{ entry.tags }}
-                    </p>
+{#                    <p>#}
+{#                        <b>Tags: </b>{{ entry.tags }}#}
+{#                    </p>#}
                     <a href="{% url 'blog:details' entry.slug %}" class="more">Read more</a>
                 </div>
         {% endfor %}

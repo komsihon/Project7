@@ -12,6 +12,8 @@ from django.utils import translation
 from django.template.defaultfilters import slugify
 
 from ikwen.core.models import Application
+from ikwen.accesscontrol.models import Member
+from ikwen.accesscontrol.backends import UMBRELLA
 
 from conf import settings
 
@@ -27,6 +29,8 @@ LANGUAGE_CHOICES = (
     (FRENCH, 'Francais')
 )
 
+# user_langs = request.META.get('HTTP_ACCEPT_LANGUAGE', ['en-US', ])
+
 
 class PostsList(TemplateView):
     template_name = 'blog/home.html'
@@ -34,25 +38,27 @@ class PostsList(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PostsList, self).get_context_data(**kwargs)
 
-        lang = translation.get_language()
+        # lang = translation.get_language()
+        lang = translation.get_language_from_request(self.request)
         if 'en' in lang:
             language = ENGLISH
         else:
             language = FRENCH
-        posts = Post.objects.filter(publish=True, appear_on_main_page=True, language=language).order_by('order_of_appearance')
-        posts = posts.order_by('-pub_date')
-        entries = []
-        for suggestion in posts:
-            # if suggestion.image.name:
-            #     entries.append(suggestion)
-            entries.append(suggestion)
-        page_count = ceil(posts.count() / POST_PER_PAGE)
-        for entry in entries:
+        post_list = list(Post.objects.select_related('member').filter(publish=True, appear_on_main_page=True, language=language).order_by('order_of_appearance'))
+
+        # post_list = post_list.order_by('-pub_date')
+        entry_list = []
+        for suggestion in post_list:
+            suggestion.member_on_umbrella = Member.objects.using(UMBRELLA).get(pk=suggestion.member.id)
+            entry_list.append(suggestion)
+        page_count = ceil(len(post_list) / POST_PER_PAGE)
+        for entry in entry_list:
             comment_count = Comments.objects.filter(post=entry).count()
             entry.comment_count = comment_count
-        context['items_paginated'] = get_paginated_view(self.request, entries, POST_PER_PAGE)
-        context['entries'] = entries
+        context['items_paginated'] = get_paginated_view(self.request, entry_list, POST_PER_PAGE)
+        context['entry_list'] = entry_list
         context['page_count'] = page_count
+        context['lang'] = lang
         return context
 
 
@@ -61,7 +67,7 @@ class AdminHome(TemplateView):
 
 
 class Search(TemplateView):
-    template_name = 'blog/search.html'
+    template_name = 'blog/home.html'
 
     def get_context_data(self, **kwargs):
         context = super(Search, self).get_context_data(**kwargs)
@@ -69,27 +75,36 @@ class Search(TemplateView):
         if radix == '':
             radix = "No-radix"
 
-        entries = grab_items_by_radix(radix)
-        context['items_paginated'] = get_paginated_view(self.request, entries, POST_PER_PAGE)
-        context['pages'] = get_paginated_view(self.request, entries, POST_PER_PAGE)
-        context['entries'] = entries
+        entry_list = grab_items_by_radix(radix)
+        page_count = ceil(len(entry_list)/ POST_PER_PAGE)
+        context['items_paginated'] = get_paginated_view(self.request, entry_list, POST_PER_PAGE)
+        context['pages'] = get_paginated_view(self.request, entry_list, POST_PER_PAGE)
+        context['page_count'] = page_count
+        context['entry_list'] = entry_list
         context['radix'] = radix
         return context
 
 
 class PostPerCategory(TemplateView):
-    template_name = 'blog/search.html'
+    template_name = 'blog/home.html'
 
     def get_context_data(self, **kwargs):
+
+        # lang = translation.get_language()
+        lang = translation.get_language_from_request(self.request)
+        if 'en' in lang:
+            language = ENGLISH
+        else:
+            language = FRENCH
         context = super(PostPerCategory, self).get_context_data(**kwargs)
         category_slug = kwargs['category_slug']
         category = PostCategory.objects.get(slug=category_slug)
         radix = category.name + ' category'
 
-        entries = Post.objects.filter(category=category)
-        context['items_paginated'] = get_paginated_view(self.request, entries, POST_PER_PAGE)
-        context['pages'] = get_paginated_view(self.request, entries, POST_PER_PAGE)
-        context['entries'] = entries
+        entry_list = Post.objects.filter(category=category, publish=True)
+        context['items_paginated'] = get_paginated_view(self.request, entry_list, POST_PER_PAGE)
+        context['pages'] = get_paginated_view(self.request, entry_list, POST_PER_PAGE)
+        context['entry_list'] = entry_list
         context['radix'] = radix
         return context
 
@@ -103,8 +118,8 @@ class PostDetails(TemplateView):
         entry = get_object_or_404(Post, slug=slug)
         context['comments'] = Comments.objects.filter(post=entry, publish=True).order_by('id')
         context['post'] = entry
-        actual_count = entry.consult_count
-        entry.consult_count = actual_count + 1
+        actual_count = entry.visit_count
+        entry.visit_count = actual_count + 1
         entry.save()
         return context
 
@@ -153,7 +168,8 @@ def grab_items_by_radix(radix):
         posts_per_summary = Post.objects.filter(summary__icontains=radix, publish=True)
         posts_per_desc = Post.objects.filter(entry__icontains=radix, publish=True)
         posts = posts_per_title | posts_per_tags | posts_per_summary | posts_per_desc
-        items.extend([post for post in posts if post.media.name])
+        # items.extend([post for post in posts if post.image.name])
+        items.extend([post for post in posts])
     return items
     # else:
     #     posts = Post.objects.filter(publish=True)

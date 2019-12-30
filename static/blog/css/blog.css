@@ -7,8 +7,10 @@
 html {height: 100%; padding-bottom: 1px} /* Forces right side scrollbar */
 h1, h2, h3, h4, h5, h6, p, ul {margin: 0; padding: 0}
 /*input, select, button {font-family: arial, sans-serif}*/
-a {color: #333}
+body {color: #222}
+a {color: #1a73e8}
 a.button {text-decoration: none}
+a:hover, a:focus {color: #233682; text-decoration: none}
 /*span {float: left}*/
 .close {cursor: pointer; padding: 5px 5px 0 0; text-align: right}
 .floating-notice {background: #F6FF8C; border: 1px solid #CDD570; border-radius: 2px; color: #484B2B; padding: 9px 24px; position: absolute}
@@ -64,10 +66,11 @@ float: right; height: 300%; margin-top: -20px; width: 20%}
 .post {border-bottom: solid 1px #CCC; float: left;padding: 45px 0; width: 100%;}
 .post:first-of-type {padding: 0 0 45px;}
 .post a.title, .post span.title {float: left; font-size: 25px; font-weight: 300; line-height: 30px;  width: 100%;}
+.post a.title, h1 .title {color: #202124}
 .post p.meta {clear: both; color: #999; float: left; padding: 3px 0; width: 100%}
 .post p.meta a {color: #999}
 .post .intro {float: left; margin-top: 12px; line-height: 30px; text-align: justify}
-.post .more {border-bottom: 1px dotted #686868; clear: both; color: #999;  float: left; margin-top: 20px; text-decoration: none}
+.post .more {border-bottom: 1px dotted #686868; clear: both; color: #0069ff;  float: left; margin-top: 20px; text-decoration: none}
 
 #navbar {color: #fff}
 /*#navbar a {color: #fff}*/
@@ -101,17 +104,18 @@ div.socials li a span {float: left; margin: 5px 12px }
 #comment_form.info form button.default {background: #E8F9FF;border: 1px solid #eaeffc; border-bottom: 2px solid #3a87ad; color: #3a87ad}
 
 .profile {float: left; width: 45%}
+.profile  a, .profile span:last-child {color: #7c67a7}
 .profile img.poster {border-radius: 50px;float: left;margin-top: 0; height: 45px; width: 45px}
 .profile .create {clear: both; color: #999; float: left; font-size: 10px;margin-top: -20px; margin-left: 55px;}
-.profile .name { color: #999; font-size: 14px; margin: 15px 10px;}
-form em {color: #EF6900; display: none}
+.profile .name { color: #371283; font-size: 14px; margin: 15px 10px;}
+form em {color: #233682; display: none}
 
 #share {color: #999; float: right; font-size: 14px; margin-right: 12px; cursor: default}
 
 
 .btn-primary {
   padding: 8px 20px;
-  background: #F28631;
+  background: #304ab3;
   color: #fff;
   border-radius: 4px;
   border:none;
@@ -121,7 +125,7 @@ form em {color: #EF6900; display: none}
 
 .btn-primary:hover,
 .btn-primary:focus{
-  background: #EF6900;
+  background: #233682;
   outline: none;
   box-shadow: none;
 }
@@ -143,6 +147,7 @@ form em {color: #EF6900; display: none}
 
 .single_comments {
   margin-bottom: 20px;
+    width: 100%;
 }
 
 .single_comments img {
@@ -161,7 +166,7 @@ form em {color: #EF6900; display: none}
 }
 
 .widget h3 {
-  color: #000;
+  /*color: #023982;*/
   text-transform: uppercase;
   margin-bottom: 20px;
 }
@@ -177,48 +182,20 @@ form em {color: #EF6900; display: none}
   margin-bottom:20px;
 }
 
-.blog_category li a {
-  background:#f5f5f5;
-  border-radius: 4px;
-  color: #888;
-  display: inline-block;
-  padding: 5px 15px;
-}
 
-.blog_category li a:hover{
-  background:#EF6900;
-  color: #fff;
-}
-
- .badge:before {
-  border-color: transparent transparent transparent #F28631;
-  border-style: solid;
-  border-width: 10px;
-  bottom: -8px;
-  content: "";
-  height: 0;
-  left: 5px;
-  position: absolute;
-  z-index: -99999;
-}
-
-.badge {
-  background-color: #EF6900;
-  border-radius: 5px;
-  color: #fff;
-  padding: 8px;
-  position: relative;
-  left: 60px;
-  top: -18px;
-  font-weight: normal;
-}
+.badge {background-color: #fff; color: #2c3e50; padding: 3px 4px; border-radius: 3px;}
 
 .blog_archieve {
   list-style: none outside none;
   margin: 0;
   padding: 0;
 }
-
+.btn-outline-primary {color: #424242;background-color: transparent;background-image: none; border:solid 1px #757575;  padding: 7px 15px;}
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #757575;
+    border-color: #757575;
+}
 .blog_archieve li {
   padding: 10px 0;
   border-bottom: 1px solid #f5f5f5;
@@ -347,7 +324,7 @@ ul.faq li > div h3 {
 }
 
 #publish_date {
-  background: #EF6900;
+  background: #233682;
   border-bottom: 5px solid #4e4e4e;
   color: #fff;
   padding: 5px 0;
@@ -380,8 +357,8 @@ ul.pagination > li > a i{
 
 ul.pagination > li.active > a,
 ul.pagination > li:hover > a {
-  background-color: #EF6900 !important;
-  border-color: #EF6900 !important;
+  background-color: #233682 !important;
+  border-color: #233682 !important;
   color: #fff;
 }
 
@@ -391,7 +368,7 @@ div.paginator {
 }
 
 div.paginator a:hover  {
-  background-color: #EF6900 !important;border-color: #EF6900 !important; color: #fff;
+  background-color: #233682 !important;border-color: #233682 !important; color: #fff;
 }
 
 div.paginator a {
@@ -399,7 +376,7 @@ div.paginator a {
 }
 
 div.paginator > span {
-  border: 1px solid #F1F1F1;
+  background-color: #dee5f2; border: 1px solid #F1F1F1; color: #485fb9;
   margin-right:5px;
   border-radius: 5px;
   font-size: 16px;
@@ -413,15 +390,15 @@ ul.pagination > li > a i{
 
 div.paginator > span .active,
 div.paginator > span :hover  {
-  background-color: #EF6900 !important;
-  border-color: #EF6900 !important;
+  background-color: #233682 !important;
+  border-color: #233682 !important;
   color: #fff;
 }
 .search_box {
 
   background-position: 314px 9px;
   background-repeat: no-repeat;
-  border-color: #DEDEDE;
+  border-color: rgba(55, 18, 131, 0.36);;
   height: 37px;
   outline: medium none;
   box-shadow: none;
@@ -454,7 +431,7 @@ ul.sidebar-gallery {
 }
 
 .tag-cloud li a:hover{
-  background:#EF6900;
+  background:#233682;
   color: #fff;
 }
 
@@ -593,7 +570,7 @@ ul.sidebar-gallery {
 }
 
 .post_reply_comments h1 a:hover{
-  color:#EF6900;
+  color:#233682;
 }
 
 .post_reply_comments h4{
@@ -609,14 +586,14 @@ ul.sidebar-gallery {
   bottom: 15px;
   position: absolute;
   right: 30px;
-  background: #EF6900;
+  background: #233682;
   color: #fff;
   border-radius: 5px;
   padding: 8px 20px;
 }
 
 .post_reply_comments a:before {
-  border-color: #EF6900 transparent transparent;
+  border-color: #233682 transparent transparent;
   border-style: solid;
   border-width: 16px;
   bottom: -11px;
@@ -680,7 +657,7 @@ shortcodes page css
 ************************/
 #bottom {
   background: #f5f5f5;
-  border-bottom: 5px solid #EF6900;
+  border-bottom: 5px solid #233682;
   font-size: 14px;
 }
 
@@ -708,7 +685,7 @@ shortcodes page css
 }
 
 #bottom ul li a:hover {
-  color: #EF6900;
+  color: #233682;
 }
 
 #bottom .widget {
@@ -727,7 +704,7 @@ shortcodes page css
 }
 
 #footer a:hover {
-  color: #EF6900;
+  color: #233682;
 }
 
 #footer ul {
@@ -753,27 +730,89 @@ shortcodes page css
   margin-bottom: 20px;
 }
 .row.blog-content {margin-top: 175px;}
-.widget.categories > div {margin-left: 20px;}
 #main-contact-form {margin-top: 75px}
 #nav-xs li a {color: #fff}
- @media only screen
-  and (min-device-width : 320px)
-  and (max-device-width : 568px){
-      .row.blog-content {margin-top: 52px;}
-      aside{margin-top: 55px;}
-      #main-contact-form {margin-top:25px}
-      .profile.visible-xs {margin-top: 25px}
-  }
-.dropdown-menu-xs {background: #EF6900}
+.dropdown-menu-xs {background: #233682}
 .post .intro {padding: 15px 0 25px 0;width: 100%}
 
+
+.top-edge-panel {
+    float: left;
+    height: 200px;
+    width: 100%;
+}
+#side-nav .panel-top .cover {
+    background: rgba(0, 0, 0, 0.52);
+    height: 200px;
+    padding: 10px;
+    width: 100%;
+}
+#side-nav .nav-stacked li a {
+    font-weight: 700;
+    color: #676767;
+    font-size: 14px;
+    padding: 10px 25px;
+}
+
+ @media only screen
+  and (min-device-width : 320px){
+   #footer {
+    background: #fff;
+    color: #b7b7b7;
+    bottom: 0;
+    font-size: 13px;
+    position: absolute;
+    padding: 7px 0;
+    text-align: center;
+    width: 85%;
+}
+      .edge-panel-left .wrapper {padding-top: 0}
+      .blog_category li {margin-bottom: 12px}
+      .widget.categories > div {margin-left: 0}
+      .row.blog-content {margin-top: 52px;}
+      aside{margin-top: 75px; float: left;}
+      #main-contact-form {margin-top:25px}
+      .profile.visible-xs {margin-top: 25px}
+      .profile {float: left; margin-top: 20px; width: 100%}
+      .mobile-search-widget {margin: 30px 0 0}
+  }
+
 @media (min-width: 768px) {
-	.post a.title, .post span.title {font-size: 30px; font-weight: 700}
+    .widget.categories > div {margin-left: 20px;}
+    aside{margin-top: 0}
+	.post a.title, .post span.title {font-size: 27px; font-weight: 400; padding: 5px 0 10px}
 	.post .intro {clear: both; float: left; font-size: 17px; font-weight: 300; line-height: 33px; padding: 0 0 30px}
-    .author {float: left}
+    .author {float: left; margin: 8px}
     .author span.name {float: left;line-height: 14px; margin: 0}
     .author span.create {float: left; clear: both; margin: 0}
     .profile .name {}
     .row.blog-content {margin-top: 100px}
 }
+
+ @media only screen
+  and (min-device-width : 320px) {
+   #footer {
+     background: #fff;
+     color: #b7b7b7;
+     bottom: 0;
+     font-size: 13px;
+     position: absolute;
+     padding: 7px 0;
+     text-align: center;
+     width: 85%;
+   }
+
+ }
+
+ /* Nav default bars css*/
+#navbar {color: #fff}
+.navbar-default {background-color: #233682;border-color: transparent;}
+#navbar .glyphicon {color: #fff}
+@media (min-width: 768px){
+    #navbar-search input {background: #1a275d; color: #ddd;}
+    /*.login-btn {background: #233682;color: #FFF;font-weight: 600; width: 100px;}*/
+    .login-btn {background: #FFF;color: #233682;font-weight: 600; width: 100px;}
+    .login-btn:hover {color: #233682}
+}
+
 
